@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ProofOnce — Coming Soon</title>
+  <meta name="description" content="ProofOnce is coming soon. A new product from Instilligent Limited." />
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="ProofOnce — Coming Soon" />
+  <meta property="og:description" content="A new product from Instilligent Limited." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://proofonce.com" />
+
+  <!-- Favicon: simple purple square -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236B21A8'/><circle cx='16' cy='16' r='8' fill='none' stroke='white' stroke-width='2.5'/><path d='M12 16l2.5 2.5L20 13' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ─── Atmospheric background ─── -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ─── Header ─── -->
+    <header>
+      <a href="/" class="logo" aria-label="ProofOnce">
+        <div class="logo-mark" aria-hidden="true"></div>
+        <span class="logo-name">ProofOnce</span>
+      </a>
+    </header>
+
+    <!-- ─── Main ─── -->
+    <main>
+      <div class="hero">
+
+        <div class="badge" role="status">
+          <span class="badge-dot" aria-hidden="true"></span>
+          Coming Soon
+        </div>
+
+        <h1>Proof<span>Once</span></h1>
+
+        <p class="subtitle">
+          Something new is on its way.<br />
+          A product from <strong>Instilligent Limited</strong> — built to make verification simpler.
+        </p>
+
+        <!-- Email capture -->
+        <div class="notify-section">
+          <p class="notify-label">Get notified when we launch</p>
+
+          <form class="form-row" id="notifyForm" novalidate>
+            <label for="emailInput" class="sr-only">Email address</label>
+            <input
+              type="email"
+              id="emailInput"
+              class="email-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <button type="submit" class="submit-btn">Notify me</button>
+          </form>
+
+          <div class="success-msg" id="successMsg" role="alert" aria-live="polite">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="#A78BFA" stroke-width="1.5"/>
+              <path d="M5 8l2 2 4-4" stroke="#A78BFA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            You're on the list — we'll be in touch.
+          </div>
+
+          <p class="privacy-note">No spam. Unsubscribe any time.</p>
+        </div>
+
+        <div class="divider" aria-hidden="true"></div>
+
+      </div>
+    </main>
+
+    <!-- ─── Footer ─── -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <strong>Instilligent Limited</strong><br />
+          NZBN&nbsp;9429051796284
+        </div>
+        <div class="footer-contact">
+          <a href="mailto:info@instilligent.com">info@instilligent.com</a>
+          <span>&copy; <span id="year"></span> Instilligent Limited</span>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- Screen-reader utility -->
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+
+  <script>
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Email form — client-side UX only (no backend yet)
+    const form       = document.getElementById('notifyForm');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value.trim();
+      if (!email || !email.includes('@')) return;
+
+      // TODO: wire up to a real backend / Cloudflare Worker / form service
+      // For now, show success state
+      form.style.display = 'none';
+      successMsg.classList.add('visible');
+    });
+  </script>
+
+</body>
+</html>
