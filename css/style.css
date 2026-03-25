@@ -401,6 +401,13 @@ h1 span {
   display: flex;
 }
 
+.error-msg {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #F87171;
+  min-height: 20px;
+}
+
 .privacy-note {
   margin-top: 14px;
   font-size: 12px;

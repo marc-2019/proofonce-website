@@ -78,6 +78,8 @@
             You're on the list — we'll be in touch.
           </div>
 
+          <p class="error-msg" id="errorMsg" role="alert" aria-live="polite"></p>
+
           <p class="privacy-note">No spam. Unsubscribe any time.</p>
         </div>
 
@@ -109,19 +111,41 @@
     // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Email form — client-side UX only (no backend yet)
+    // Email capture — POSTs to CF Pages Function at /api/subscribe
     const form       = document.getElementById('notifyForm');
+    const submitBtn  = form.querySelector('.submit-btn');
     const successMsg = document.getElementById('successMsg');
+    const errorMsg   = document.getElementById('errorMsg');
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
+
       const email = document.getElementById('emailInput').value.trim();
       if (!email || !email.includes('@')) return;
 
-      // TODO: wire up to a real backend / Cloudflare Worker / form service
-      // For now, show success state
-      form.style.display = 'none';
-      successMsg.classList.add('visible');
+      // Loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      errorMsg.textContent = '';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        if (res.ok) {
+          form.style.display = 'none';
+          successMsg.classList.add('visible');
+        } else {
+          throw new Error('Server error ' + res.status);
+        }
+      } catch {
+        errorMsg.textContent = 'Something went wrong — please try again.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Notify me';
+      }
     });
   </script>
 
