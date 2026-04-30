@@ -1,0 +1,48 @@
+{
+  "$schema": "https://instilligent.com/schemas/marketing-truths.v1.json",
+  "product_name": "ProofOnce",
+  "product_status": "pre-launch (coming-soon landing page only)",
+  "last_full_audit_date": "2026-04-30",
+  "last_full_audit_by": "claude+marc",
+  "audit_doc": "~/cf-research/marketing-audits/proofonce-2026-04-30.md",
+  "cf_directive": "customer-facing-copy-requires-product-claim-audit",
+  "_note": "Fifth marketing-truths.json in the portfolio. ProofOnce is the only portfolio product with NO backend at all — site is a coming-soon landing page. Recall focus: removed broken email-capture form (audit critical issue: silently discarded submissions while showing success message).",
+  "product_claims": [
+    {
+      "id": "proofonce.status.coming-soon",
+      "claim": "ProofOnce — Coming Soon",
+      "surfaces": ["index.html (title + hero badge)", "llms.txt#L8-L12"],
+      "evidence_references": ["No backend code in repo (only landing page + assets)"],
+      "verdict": "ACCURATE",
+      "last_verified": "2026-04-30"
+    },
+    {
+      "id": "proofonce.notify.cta",
+      "claim": "Email info@instilligent.com to be notified when ProofOnce launches",
+      "surfaces": ["index.html (notify-section)"],
+      "evidence_references": ["Direct mailto: link, no UI affordance for fake form submission"],
+      "verdict": "IMPLEMENTED",
+      "last_verified": "2026-04-30",
+      "previous_overclaim": "Was an email-capture form with submit button that silently discarded all submissions while showing 'You're on the list — we'll be in touch.' to the user. Removed 2026-04-30 as UX deception per audit."
+    },
+    {
+      "id": "proofonce.intended-category",
+      "claim": "Intended product category is document and identity verification: prove something once, reuse the proof across multiple consumers without re-presenting source documents.",
+      "surfaces": ["llms.txt#L4-L6"],
+      "verdict": "PLANNED",
+      "last_verified": "2026-04-30",
+      "notes": "Already framed as 'intended product category' (forward-looking, not present-tense IS-claim). Audit flagged as borderline but acceptable with the 'Currently pre-launch' qualifier on line 3."
+    }
+  ],
+  "open_items": [
+    "Backend wiring — when ProofOnce moves from coming-soon to a real product, build features + then write product claims that match the code (audit-before-copy directive applies). The Cloudflare Pages Function pattern from instilligent.com (functions/api/contact.ts) is reusable when a real notify list is wanted."
+  ],
+  "recall_history": [
+    {
+      "date": "2026-04-30",
+      "claim_dropped": "Email capture form (notifyForm) with Notify me button that silently discarded submissions",
+      "verdict_at_recall": "ABSENT (form had TODO at index.html:121 — 'wire up to a real backend / Cloudflare Worker / form service')",
+      "reason": "Form showed 'You're on the list' success message to the user, but no submission was stored anywhere. Functionally deceptive UX per the 2026-04-30 audit."
+    }
+  ]
+}
