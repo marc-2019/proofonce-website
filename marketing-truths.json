@@ -11,16 +11,25 @@
     {
       "id": "proofonce.status.coming-soon",
       "claim": "ProofOnce — Coming Soon",
-      "surfaces": ["index.html (title + hero badge)", "llms.txt#L8-L12"],
-      "evidence_references": ["No backend code in repo (only landing page + assets)"],
+      "surfaces": [
+        "index.html (title + hero badge)",
+        "llms.txt#L8-L12"
+      ],
+      "evidence_references": [
+        "No backend code in repo (only landing page + assets)"
+      ],
       "verdict": "ACCURATE",
       "last_verified": "2026-04-30"
     },
     {
       "id": "proofonce.notify.cta",
       "claim": "Email info@instilligent.com to be notified when ProofOnce launches",
-      "surfaces": ["index.html (notify-section)"],
-      "evidence_references": ["Direct mailto: link, no UI affordance for fake form submission"],
+      "surfaces": [
+        "index.html (notify-section)"
+      ],
+      "evidence_references": [
+        "Direct mailto: link, no UI affordance for fake form submission"
+      ],
       "verdict": "IMPLEMENTED",
       "last_verified": "2026-04-30",
       "previous_overclaim": "Was an email-capture form with submit button that silently discarded all submissions while showing 'You're on the list — we'll be in touch.' to the user. Removed 2026-04-30 as UX deception per audit."
@@ -28,10 +37,25 @@
     {
       "id": "proofonce.intended-category",
       "claim": "Intended product category is document and identity verification: prove something once, reuse the proof across multiple consumers without re-presenting source documents.",
-      "surfaces": ["llms.txt#L4-L6"],
+      "surfaces": [
+        "llms.txt#L4-L6"
+      ],
       "verdict": "PLANNED",
       "last_verified": "2026-04-30",
       "notes": "Already framed as 'intended product category' (forward-looking, not present-tense IS-claim). Audit flagged as borderline but acceptable with the 'Currently pre-launch' qualifier on line 3."
+    },
+    {
+      "id": "company.legal-identity",
+      "claim": "Operated by Instilligent Limited (NZ company 5775307, NZBN 9429041896853).",
+      "surfaces": [
+        "site footer",
+        "legal/privacy pages"
+      ],
+      "evidence_references": [
+        "Certificate of Incorporation, NZ Companies Office, 27 Sep 2024 — company 5775307, NZBN 9429041896853"
+      ],
+      "verdict": "ACCURATE",
+      "last_verified": "2026-06-19"
     }
   ],
   "open_items": [
