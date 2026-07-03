@@ -6,7 +6,7 @@
   "last_full_audit_by": "claude+marc",
   "audit_doc": "~/cf-research/marketing-audits/proofonce-2026-04-30.md",
   "cf_directive": "customer-facing-copy-requires-product-claim-audit",
-  "_note": "Fifth marketing-truths.json in the portfolio. ProofOnce is the only portfolio product with NO backend at all — site is a coming-soon landing page. Recall focus: removed broken email-capture form (audit critical issue: silently discarded submissions while showing success message).",
+  "_note": "Fifth marketing-truths.json in the portfolio. ProofOnce is otherwise still a coming-soon landing page with no product features — the one real backend piece is the waitlist Cloudflare Pages Function (functions/api/waitlist.ts), re-introduced 2026-07-04 after the 2026-04-30 recall of the original broken (silently-discarding) form.",
   "product_claims": [
     {
       "id": "proofonce.status.coming-soon",
@@ -23,16 +23,18 @@
     },
     {
       "id": "proofonce.notify.cta",
-      "claim": "Email info@instilligent.com to be notified when ProofOnce launches",
+      "claim": "Submit your email via the waitlist form to be notified when ProofOnce launches (mailto fallback also offered)",
       "surfaces": [
-        "index.html (notify-section)"
+        "index.html (notify-section, waitlist-form)",
+        "functions/api/waitlist.ts"
       ],
       "evidence_references": [
-        "Direct mailto: link, no UI affordance for fake form submission"
+        "Real Cloudflare Pages Function (functions/api/waitlist.ts) forwards validated submissions to Resend; returns 503 (never fakes success) until RESEND_API_KEY is configured in Cloudflare Pages Production env",
+        "Client only shows the success message after the backend returns 200 OK; any error falls back to the mailto link, so no submission can be silently discarded (the exact failure mode the 2026-04-30 recall removed)"
       ],
       "verdict": "IMPLEMENTED",
-      "last_verified": "2026-04-30",
-      "previous_overclaim": "Was an email-capture form with submit button that silently discarded all submissions while showing 'You're on the list — we'll be in touch.' to the user. Removed 2026-04-30 as UX deception per audit."
+      "last_verified": "2026-07-04",
+      "previous_overclaim": "Was an email-capture form with submit button that silently discarded all submissions while showing 'You're on the list — we'll be in touch.' to the user. Removed 2026-04-30 as UX deception per audit. Re-introduced 2026-07-04 with a real backend (MARC-APPROVED, both the RESEND_API_KEY gate and this exact copy)."
     },
     {
       "id": "proofonce.intended-category",
