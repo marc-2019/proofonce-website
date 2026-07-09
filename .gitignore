@@ -6,3 +6,11 @@ node_modules/
 .env.local
 
 .claude/
+
+# CortexForge tooling / cwd-leak pollution (2026-07-10 dirty-tree hygiene)
+.cf-pending-reviews/
+/mcp/
+/scripts/local-llm-tasks/
+data/wip-ledger.jsonl
+__pycache__/
+
