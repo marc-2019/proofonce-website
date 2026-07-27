@@ -62,17 +62,30 @@
           A product from <strong>Instilligent Limited</strong> — designed to make verification simpler.
         </p>
 
-        <!-- Notify CTA — direct email link until launch list is live.
-             The previous email-capture form had no backend wired up;
-             submissions were silently discarded. Removed 2026-04-30
-             as part of the marketing-truth recall. -->
+        <!-- Notify CTA — real backend (Cloudflare Pages Function -> Resend),
+             re-introduced 2026-07-04 (MARC-APPROVED). Never claims success
+             unless the backend confirms; degrades to the mailto fallback on
+             any error, so the 2026-04-30 recall's guarantee (no silently
+             discarded submissions) still holds. -->
         <div class="notify-section">
           <p class="notify-label">Get notified when we launch</p>
 
+          <form class="notify-form" id="waitlist-form" novalidate>
+            <label class="sr-only" for="waitlist-email">Email address</label>
+            <input
+              id="waitlist-email" name="email" type="email" required
+              autocomplete="email" placeholder="you@example.com"
+              aria-label="Email address" />
+            <!-- honeypot: hidden from humans, bots fill it -->
+            <input class="sr-only" tabindex="-1" autocomplete="off"
+              name="website" aria-hidden="true" />
+            <button type="submit">Notify me</button>
+          </form>
+          <p class="notify-status" id="waitlist-status" role="status" aria-live="polite"></p>
+
           <p class="notify-cta">
-            Drop us a line at
-            <a class="notify-email-link" href="mailto:info@instilligent.com?subject=ProofOnce%20%E2%80%94%20notify%20me%20when%20you%20launch">info@instilligent.com</a>
-            and we'll let you know when ProofOnce opens up.
+            Prefer email? Reach us at
+            <a class="notify-email-link" href="mailto:info@instilligent.com?subject=ProofOnce%20%E2%80%94%20notify%20me%20when%20you%20launch">info@instilligent.com</a>.
           </p>
         </div>
 
@@ -103,9 +116,38 @@
   <script>
     // Dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Email-capture form removed 2026-04-30 (no backend wired up;
-    // submissions were silently discarded). Replaced with a direct
-    // mailto link in the notify-section above.
+
+    // Waitlist form (re-introduced 2026-07-04, MARC-APPROVED) — submits to
+    // the real Cloudflare Pages Function and never claims success unless
+    // the backend confirms (the whole point of the 2026-04-30 recall).
+    (function () {
+      var form = document.getElementById('waitlist-form');
+      var status = document.getElementById('waitlist-status');
+      if (!form) return;
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var email = form.email.value.trim();
+        if (!email) return;
+        status.textContent = 'Sending…';
+        try {
+          var r = await fetch('/api/waitlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, source: 'hero', website: form.website.value })
+          });
+          if (r.ok) {
+            form.reset();
+            status.textContent = "You're on the list — we'll be in touch when ProofOnce launches.";
+          } else {
+            status.innerHTML = "Couldn't add you just now. Please email " +
+              '<a href="mailto:info@instilligent.com">info@instilligent.com</a>.';
+          }
+        } catch (err) {
+          status.innerHTML = "Couldn't add you just now. Please email " +
+            '<a href="mailto:info@instilligent.com">info@instilligent.com</a>.';
+        }
+      });
+    })();
   </script>
 
 </body>
