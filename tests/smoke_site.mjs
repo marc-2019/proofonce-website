@@ -94,7 +94,8 @@ test('live: blocked paths 404, public pages 200', { skip: process.env.LIVE !== '
       assert.equal(r.status, 404, `${method} ${p} -> ${r.status}`);
     }
     for (const p of PUBLIC) {
-      const r = await fetch(base + p, { method, redirect: 'manual' });
+      // Pages 308s /index.html to /. Follow it; the page the visitor gets must be 200.
+      const r = await fetch(base + p, { method });
       assert.equal(r.status, 200, `${method} ${p} -> ${r.status}`);
     }
   }
