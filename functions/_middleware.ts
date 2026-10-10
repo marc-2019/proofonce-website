@@ -7,16 +7,29 @@
 //
 // `_routes.json` includes "/*" (only known-public static assets are excluded),
 // so percent-encoded variants such as /%2egitignore always reach this code.
-// The path is decoded repeatedly until it stops changing, lower-cased and
-// dot-segment-normalised BEFORE matching, then a hit returns 404.
+// The path is decoded repeatedly until it stops changing, lower-cased, and
+// each segment loses ';' parameters plus trailing dots and spaces. Dot
+// segments are normalised BEFORE matching. A basename that starts with
+// "marketing-truths" or another blocked file name is blocked too. A hit
+// returns 404.
 //
-// Asserted by tests/smoke_site.mjs (imports normalizePath / isBlocked).
+// Asserted by tests/smoke_site.mjs (loads normalizePath / isBlocked without
+// a TypeScript import, so plain `node --test` works on Node 22.14).
 
 /** Top-level directories that must never be served. */
 const BLOCKED_DIRS: string[] = ["docs", "tests", "scripts", "tools", "functions", "marketing-audits"];
 
 /** Exact files (lower-case, normalised) that must never be served. */
 const BLOCKED_FILES: string[] = ["/marketing-truths.json", "/_routes.json", "/_redirects", "/_headers", "/package.json", "/package-lock.json"];
+
+/** Drop ';' path-params, then trailing dots and spaces. `..` is left intact. */
+function cleanSegment(seg: string): string {
+  const semi = seg.indexOf(";");
+  if (semi >= 0) seg = seg.slice(0, semi);
+  seg = seg.replace(/ +$/g, "");
+  if (seg === "." || seg === "..") return seg;
+  return seg.replace(/[. ]+$/g, "");
+}
 
 export function normalizePath(pathname: string): string {
   let p = pathname;
@@ -32,7 +45,8 @@ export function normalizePath(pathname: string): string {
   }
   p = p.replace(/\\/g, "/").toLowerCase();
   const out: string[] = [];
-  for (const seg of p.split("/")) {
+  for (const raw of p.split("/")) {
+    const seg = cleanSegment(raw);
     if (seg === "" || seg === ".") continue;
     if (seg === "..") {
       out.pop();
@@ -50,6 +64,9 @@ export function isBlocked(pathname: string): boolean {
   if (segs.some((s) => s.startsWith(".") && s !== ".well-known")) return true;
   if (segs.length > 0 && BLOCKED_DIRS.includes(segs[0])) return true;
   if (BLOCKED_FILES.includes(n)) return true;
+  const base = segs.length > 0 ? segs[segs.length - 1] : "";
+  if (base.startsWith("marketing-truths")) return true;
+  if (BLOCKED_FILES.some((f) => base.startsWith(f.slice(1)))) return true;
   // Markdown is never a public page on this site.
   if (n.endsWith(".md")) return true;
   return false;
