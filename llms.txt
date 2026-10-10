@@ -1,9 +1,9 @@
 # ProofOnce
 
 > A new product from Instilligent Limited. Currently pre-launch — site is in
-> "Coming Soon" mode collecting interest. The intended product category is
-> document and identity verification: prove something once, reuse the proof
-> across multiple consumers without re-presenting source documents.
+> "Coming Soon" mode collecting interest. ProofOnce is being designed to make
+> sharing proof simpler. Details will be published when the first version
+> ships.
 
 ## Status
 
@@ -13,9 +13,9 @@ will be published when the first version ships.
 
 ## Built by
 
-Instilligent Limited — https://instilligent.com — NZ AI consultancy and
-product studio. We build production AI software for regulated industries
-across NZ, Australia, and Southeast Asia. Marc Armstrong, founder.
+Instilligent Limited — https://instilligent.com — New Zealand software
+company building practical software for regulated industries. Marc Armstrong,
+founder.
 
 ## Contact
 
